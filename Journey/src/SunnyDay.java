@@ -2,6 +2,11 @@ import java.util.ArrayList;
 
 public class SunnyDay implements Environment {
 	
+	private static double speedLimit = 10.0;
+	
+	private ArrayList<Vehicle> totalVehicles;
+	private Display display; 
+	
 	private static int numberOfLanes = 4;
 
 

@@ -25,6 +25,11 @@ public class Main extends JFrame{
 		defaultEnvironment.setDisplay(display);
 		
 		
+		JMenu item = new JMenu("Test");//CHANGE LATER
+		options.add(item);   
+		menuBar.add(options);
+		this.setJMenuBar(menuBar);
+	
 		this.getContentPane().add(display);
 		pack();
 	

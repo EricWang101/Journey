@@ -1,11 +1,14 @@
 
 public class Car implements Vehicle {
 	
+	private static double topSpeed = 15.0;
+	
+	private Environment environment; 
+	
 	
 	@Override
 	public void tick() {
-		
-		
+			
 	}
 
 	@Override
