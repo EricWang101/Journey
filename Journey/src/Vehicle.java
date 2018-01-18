@@ -1,3 +1,4 @@
+import java.awt.Color;
 
 public interface Vehicle {
 	
@@ -11,10 +12,10 @@ public interface Vehicle {
 	
 	public void setLane(int lane);
 	
-	public int getPosition();
+	public double getPosition();
 	
 	public boolean isCrashed();
 	
-	public void getColor();
+	public Color getColor();
 		
 }

@@ -1,3 +1,5 @@
+import java.util.Random;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -23,7 +25,7 @@ public class Main extends JFrame{
 	
 	public Main() {
 		defaultEnvironment.setDisplay(display);
-		
+		addRandomCars(defaultEnvironment);
 		
 		JMenu item = new JMenu("Test");//CHANGE LATER
 		options.add(item);   
@@ -40,6 +42,18 @@ public class Main extends JFrame{
 	
 	public void addVehicles(Environment environment) {
 		
+	}
+	
+	public void addRandomCars(Environment environment) {
+		Random randomNumber = new Random();
+		for(int i = 0; i< 6;i++) {
+			environment.addVehicle(new Car(environment, 
+					environment.getVehicleHeight() * 1.2*i,
+					randomNumber.nextInt(environment.getLanes()-1),//MAYBE NOT MINUS ONE
+					randomNumber.nextInt(10) / 4.0,
+					1.001+(1.099-1.001) * randomNumber.nextDouble(),
+				    0.95+(0.99-0.95) * randomNumber.nextDouble()));
+		}
 	}
 	
 

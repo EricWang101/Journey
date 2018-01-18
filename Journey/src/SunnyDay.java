@@ -4,7 +4,9 @@ public class SunnyDay implements Environment {
 	
 	private static double speedLimit = 10.0;
 	
-	private ArrayList<Vehicle> totalVehicles;
+	private static final double carHeight = 40;// CHANGE LATER 
+	
+	private ArrayList<Vehicle> totalVehicles = new ArrayList<Vehicle>();
 	private Display display; 
 	
 	private static int numberOfLanes = 4;
@@ -12,19 +14,24 @@ public class SunnyDay implements Environment {
 
 	@Override
 	public void setDisplay(Display display) {
-		// TODO Auto-generated method stub
+		this.display = display;
 		
 	}
 
 	@Override
 	public void draw() {
-		// TODO Auto-generated method stub
+		for(Vehicle v: this.totalVehicles) {
+			if(v instanceof Car) {
+				display.drawCar((int) v.getPosition(), v.getLane(), v.getColor(), v.isCrashed());
+			}
+			
+		}
 		
 	}
 
 	@Override
 	public void addVehicle(Vehicle vehicle) {
-		// TODO Auto-generated method stub
+		totalVehicles.add(vehicle);
 		
 	}
 
@@ -35,9 +42,8 @@ public class SunnyDay implements Environment {
 	}
 
 	@Override
-	public double getVehicleLength() {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getVehicleHeight() {
+		return carHeight;
 	}
 
 	@Override

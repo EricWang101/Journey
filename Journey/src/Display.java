@@ -17,7 +17,9 @@ public class Display extends JPanel {
 	protected int numberOfLanes; 
 	protected int xOffset = 100;
 	protected int yOffset = 0 ;
-	protected int laneWidth = 50;
+	protected int laneWidth = 30;
+	protected int carWidth = 20;
+	
 	
 	
 	
@@ -49,7 +51,17 @@ public class Display extends JPanel {
 			context.drawLine(xOffset + i*laneWidth, 0, xOffset + i*laneWidth, (int)dimension.getHeight());
 		}
 		
+		environment.draw();
 		
+		
+	}
+	
+	public void drawCar(int position, int lane, Color color, boolean crashed) {
+		int padding = laneWidth - carWidth;
+		context.setColor(Color.BLACK);
+		context.drawRect(xOffset + lane*laneWidth + padding/2, yOffset + position, laneWidth - padding, (int)environment.getVehicleHeight());
+		context.setColor(color);
+		context.fillRect(xOffset + lane*laneWidth + padding/2, yOffset + position, laneWidth - padding, (int)environment.getVehicleHeight());
 	}
 	
 	

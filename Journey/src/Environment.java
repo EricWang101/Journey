@@ -10,7 +10,7 @@ public interface Environment {
 	
 	public void clear();
 	
-	public double getVehicleLength();
+	public double getVehicleHeight();
 	
 	public ArrayList<Vehicle> getAllVehicles();
 	
