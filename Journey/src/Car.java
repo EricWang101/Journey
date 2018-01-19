@@ -2,9 +2,9 @@ import java.awt.Color;
 
 public class Car implements Vehicle {
 	
-	private static double topSpeed = 15.0;
+	private static double topSpeed = 1.0;
 	private static Color color = Color.MAGENTA;
-	//protected static int length = 40;
+	protected static final int carHeight = 35;
 	
 	private Environment environment; 
 	private double position;
@@ -21,12 +21,36 @@ public class Car implements Vehicle {
 		this.lane = lane;
 		this.speed = speed;
 		this.acceleration = accel;
-		this.brakingPower = braking;
-		
-
+		this.brakingPower = braking;	
 	}
-	@Override
-	public void tick() {
+	
+	public Car clone() {
+		return new Car(environment,position,lane,speed,acceleration,brakingPower);
+	}
+	
+
+	public void tick(Environment environment) {
+		switch(state) {
+			case CONSTANT: 
+				break;
+			case ACCELERATING: 
+				if((speed<topSpeed) && (speed*acceleration<environment.getSpeedLimit())) {
+					if(speed < 1.0) this.speed = 1.0;
+					if(speed*acceleration > environment.getSpeedLimit()) {
+						this.speed = environment.getSpeedLimit();
+					}else {
+						speed = speed*acceleration;
+					}
+					
+				}
+				break;
+			case BRAKING:
+				if(speed > 0) speed = speed*brakingPower;
+			case CRASHED:
+				speed = 0.0;
+				return;	
+		}
+		position += speed;
 			
 	}
 

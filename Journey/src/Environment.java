@@ -8,8 +8,6 @@ public interface Environment {
 	
 	public void addVehicle(Vehicle vehicle);
 	
-	public void clear();
-	
 	public double getVehicleHeight();
 	
 	public ArrayList<Vehicle> getAllVehicles();

@@ -49,7 +49,7 @@ public class Main extends JFrame{
 		for(int i = 0; i< 6;i++) {
 			environment.addVehicle(new Car(environment, 
 					environment.getVehicleHeight() * 1.2*i,
-					randomNumber.nextInt(environment.getLanes()-1),//MAYBE NOT MINUS ONE
+					randomNumber.nextInt(environment.getLanes()-1),//MAYBE NOT MINUS ONE// Maybe have to add top speed to the class
 					randomNumber.nextInt(10) / 4.0,
 					1.001+(1.099-1.001) * randomNumber.nextDouble(),
 				    0.95+(0.99-0.95) * randomNumber.nextDouble()));

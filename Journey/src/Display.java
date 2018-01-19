@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
@@ -21,8 +22,6 @@ public class Display extends JPanel {
 	protected int carWidth = 20;
 	
 	
-	
-	
 	public Display(Environment environment) {
 		this.environment = environment;
 		this.numberOfLanes = 4;
@@ -34,11 +33,24 @@ public class Display extends JPanel {
 		this.setPreferredSize(new Dimension(xOffset*2 + (this.environment.getLanes() * this.laneWidth),650));
 	}
 	
+	public void settingEndBoundary(int lastCar) {
+		if(dimension ==null) return;
+		
+		if((yOffset + lastCar) + (dimension.height / 8) > dimension.height) {
+			yOffset -= dimension.height/2;
+		}
+		
+		
+	}
+	
 	public  void  paint(Graphics graphic) {
+		
 		//super.paintComponent(graphic);
 		this.context = (Graphics2D) graphic;
 		this.dimension = getSize();
 		
+		
+	    
 		//Drawing the main road lines
 		context.setStroke(solid);
 		context.setColor(Color.BLACK);
@@ -59,9 +71,9 @@ public class Display extends JPanel {
 	public void drawCar(int position, int lane, Color color, boolean crashed) {
 		int padding = laneWidth - carWidth;
 		context.setColor(Color.BLACK);
-		context.drawRect(xOffset + lane*laneWidth + padding/2, yOffset + position, laneWidth - padding, (int)environment.getVehicleHeight());
+		context.drawRect(xOffset + lane*laneWidth + padding/2, yOffset + position, laneWidth - padding, Car.carHeight);
 		context.setColor(color);
-		context.fillRect(xOffset + lane*laneWidth + padding/2, yOffset + position, laneWidth - padding, (int)environment.getVehicleHeight());
+		context.fillRect(xOffset + lane*laneWidth + padding/2, yOffset + position, laneWidth - padding, Car.carHeight);
 	}
 	
 	

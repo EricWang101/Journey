@@ -2,7 +2,7 @@ import java.awt.Color;
 
 public interface Vehicle {
 	
-	public void tick() ; 
+	public void tick(Environment environment) ; 
 	
 	public VehicleState getState();
 	
@@ -17,5 +17,6 @@ public interface Vehicle {
 	public boolean isCrashed();
 	
 	public Color getColor();
+	
 		
 }
