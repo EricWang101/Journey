@@ -18,5 +18,9 @@ public interface Vehicle {
 	
 	public Color getColor();
 	
+	public double getHeight();
+	
+	
+	
 		
 }

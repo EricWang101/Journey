@@ -2,7 +2,7 @@ import java.awt.Color;
 
 public class Car implements Vehicle {
 	
-	private static double topSpeed = 1.0;
+	private static double topSpeed = 10;//MARK
 	private static Color color = Color.MAGENTA;
 	protected static final int carHeight = 35;
 	
@@ -30,7 +30,7 @@ public class Car implements Vehicle {
 	
 
 	public void tick(Environment environment) {
-		switch(state) {
+		switch(this.state) {
 			case CONSTANT: 
 				break;
 			case ACCELERATING: 
@@ -87,6 +87,11 @@ public class Car implements Vehicle {
 	public Color getColor() {
 		return color;
 		
+	}
+
+	@Override
+	public double getHeight() {
+		return carHeight;
 	}
 
 }

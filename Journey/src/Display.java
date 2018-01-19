@@ -26,7 +26,6 @@ public class Display extends JPanel {
 		this.environment = environment;
 		this.numberOfLanes = 4;
 		update();
-		
 	}
 	
 	public void update() {
@@ -39,8 +38,6 @@ public class Display extends JPanel {
 		if((yOffset + lastCar) + (dimension.height / 8) > dimension.height) {
 			yOffset -= dimension.height/2;
 		}
-		
-		
 	}
 	
 	public  void  paint(Graphics graphic) {
@@ -73,6 +70,9 @@ public class Display extends JPanel {
 		context.setColor(Color.BLACK);
 		context.drawRect(xOffset + lane*laneWidth + padding/2, yOffset + position, laneWidth - padding, Car.carHeight);
 		context.setColor(color);
+		if(crashed) {
+			context.setColor(Color.BLACK);//Kinda boring , maybe change up later
+		}
 		context.fillRect(xOffset + lane*laneWidth + padding/2, yOffset + position, laneWidth - padding, Car.carHeight);
 	}
 	

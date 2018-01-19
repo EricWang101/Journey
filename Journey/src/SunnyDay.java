@@ -8,7 +8,7 @@ public class SunnyDay implements Environment {
 	
 	private static final int delay = 40;
 	private static double speedLimit = 10.0;
-	private static final double carHeight = 45; // CHANGE LATER 
+	
 	private static int numberOfLanes = 4;
 	
 	private ArrayList<Vehicle> totalVehicles = new ArrayList<Vehicle>();
@@ -62,12 +62,13 @@ public class SunnyDay implements Environment {
 		
 	}
 
+	//Figure this out
 	@Override
 	public double getVehicleHeight() {
-		return carHeight;
+		return 0.0;
 	}
 
-	@Override
+	
 	public ArrayList<Vehicle> getAllVehicles() {
 		return this.totalVehicles;
 	}
@@ -96,14 +97,37 @@ public class SunnyDay implements Environment {
 
 	@Override
 	public Vehicle nextVehicle(Vehicle behind) {
-		// TODO Auto-generated method stub
-		return null;
+		Vehicle closest = null;
+		for(Vehicle v : totalVehicles) {
+			if(v.getLane() == behind.getLane() && 
+			   !v.equals(behind) &&//MAYBE CHANGE
+			   v.getPosition() > behind.getPosition() && 
+			     (closest == null || v.getPosition() < behind.getPosition())) {
+				closest = v;
+			}
+		}
+		return closest;
 	}
 
 	@Override
 	public void tick() {
 		SunnyDay previousEnvironment = SunnyDay.this.clone();
 		for(Vehicle v : totalVehicles) {
+			
+			Vehicle nextCar = nextVehicle(v);
+			
+			//Marking Crashed
+			if(nextCar != null && (v.getPosition() + v.getHeight()) >= nextCar.getPosition()) {
+				v.setState(VehicleState.CRASHED);
+				nextCar.setState(VehicleState.CRASHED);
+				continue;	
+			}
+			//Continue On
+			if(v.isCrashed()) {
+				continue;
+			}
+		
+			
 			v.tick(previousEnvironment);
 		}
 		
