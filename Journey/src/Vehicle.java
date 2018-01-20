@@ -20,6 +20,18 @@ public interface Vehicle {
 	
 	public double getHeight();
 	
+	public boolean isPassing();
+	
+	public double getTopSpeed();
+	
+	public double getSpeed();
+	
+	public void setPassing(boolean isPassing);
+	
+	public Vehicle getPassedVehicle(); 
+	
+	public void setPassedVehicle(Vehicle vehicle);
+	
 	
 	
 		

@@ -46,13 +46,13 @@ public class Main extends JFrame{
 	
 	public void addRandomCars(Environment environment) {
 		Random randomNumber = new Random();
-		for(int i = 0; i< 6;i++) {
+		for(int i = 0; i< 9;i++) {
 			environment.addVehicle(new Car(environment, 
 					Car.carHeight * 1.2*i,
 					randomNumber.nextInt(environment.getLanes()-1),//MAYBE NOT MINUS ONE// Maybe have to add top speed to the class
 					randomNumber.nextInt(10) / 4.0,
-					1.001+(1.099-1.001) * randomNumber.nextDouble(),
-				    0.95+(0.99-0.95) * randomNumber.nextDouble()));
+					1.001+(.098) * randomNumber.nextDouble(),
+				    0.95+ (.04) * randomNumber.nextDouble()));
 		}
 	}
 	

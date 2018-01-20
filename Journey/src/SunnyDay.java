@@ -108,6 +108,16 @@ public class SunnyDay implements Environment {
 		}
 		return closest;
 	}
+	
+	public boolean laneClear(double startingPos, double endingPos, int targetLane) {
+		for(Vehicle v: totalVehicles) {
+			if(v.getLane() != targetLane) continue; 
+			if((startingPos <= v.getPosition()) && v.getPosition() <= endingPos ) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	@Override
 	public void tick() {
@@ -116,6 +126,10 @@ public class SunnyDay implements Environment {
 			
 			Vehicle nextCar = nextVehicle(v);
 			
+			if(v.isCrashed()) {
+				continue;
+			}
+			
 			//Marking Crashed
 			if(nextCar != null && (v.getPosition() + v.getHeight()) >= nextCar.getPosition()) {
 				v.setState(VehicleState.CRASHED);
@@ -123,11 +137,31 @@ public class SunnyDay implements Environment {
 				continue;	
 			}
 			//Continue On
-			if(v.isCrashed()) {
-				continue;
+			
+			
+			//attempt passing- stays one car length behind 
+			//NOTE- Crash when only within car distance, and the braking speed is still greater than next car's speed, and cant change lanes
+			if(nextCar!= null) {
+				if(nextCar.getPosition() - v.getPosition() < (2* Car.carHeight)) {
+					v.setState(VehicleState.BRAKING);
+					
+					if(!v.isPassing() && 
+					(v.getLane() + 1) < getLanes() &&
+					v.getTopSpeed() > nextCar.getSpeed() &&
+					laneClear(v.getPosition()-(2*Car.carHeight), nextCar.getPosition()+(2*Car.carHeight), v.getLane()+1)) {
+						
+						v.setLane(v.getLane()+1);
+						v.setState(VehicleState.ACCELERATING);
+						v.setPassing(true);
+						v.setPassedVehicle(nextCar);
+						
+					}
+				//Accelerate until equal to speed of the car in front
+				}else {
+					 v.setState((v.getSpeed() >= nextCar.getSpeed()) ? VehicleState.CONSTANT : VehicleState.ACCELERATING); 
+				}
 			}
 		
-			
 			v.tick(previousEnvironment);
 		}
 		

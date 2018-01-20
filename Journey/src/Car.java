@@ -2,7 +2,7 @@ import java.awt.Color;
 
 public class Car implements Vehicle {
 	
-	private static double topSpeed = 10;//MARK
+	private static double topSpeed = 4.0; //MARK
 	private static Color color = Color.MAGENTA;
 	protected static final int carHeight = 35;
 	
@@ -12,6 +12,8 @@ public class Car implements Vehicle {
 	private double speed; 
 	private double acceleration; 
 	private double brakingPower; 
+	protected boolean passing = false;
+	private Vehicle passedVehicle;
 	private VehicleState state = VehicleState.CONSTANT;
 	
 	
@@ -45,7 +47,10 @@ public class Car implements Vehicle {
 				}
 				break;
 			case BRAKING:
-				if(speed > 0) speed = speed*brakingPower;
+				if(speed > 0) {
+					speed = speed*brakingPower;
+				}
+				break; //THE BUG I FINALLY FOUND IT
 			case CRASHED:
 				speed = 0.0;
 				return;	
@@ -86,12 +91,42 @@ public class Car implements Vehicle {
 	@Override
 	public Color getColor() {
 		return color;
-		
 	}
 
 	@Override
 	public double getHeight() {
 		return carHeight;
+	}
+	
+	public boolean isPassing() {
+		return this.passing;
+	}
+
+	@Override
+	public double getTopSpeed() {
+		return this.topSpeed;
+	}
+
+	@Override
+	public double getSpeed() {
+		return this.speed;
+	}
+
+	@Override
+	public void setPassing(boolean isPassing) {
+		this.passing = isPassing;
+		
+	}
+
+	@Override
+	public Vehicle getPassedVehicle() {
+		return this.passedVehicle;
+	}
+
+	@Override
+	public void setPassedVehicle(Vehicle vehicle) {
+		this.passedVehicle = vehicle;
+		
 	}
 
 }
