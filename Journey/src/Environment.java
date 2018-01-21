@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 
+import javax.swing.Timer;
+
 public interface Environment {
+	
+	
 	
 	public void setDisplay(Display display);
 	
@@ -23,6 +27,17 @@ public interface Environment {
 	public Vehicle nextVehicle(Vehicle behind);
 	
 	public void tick();
+	
+	public void clear();
+	
+	public void resetTimer();
+	
+	public void stopTimer();
+	
+	public void startTimer();
+	
+	public boolean isRunning();
+	
 	
 	
 	

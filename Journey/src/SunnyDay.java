@@ -46,6 +46,8 @@ public class SunnyDay implements Environment {
 		}
 	}
 	
+	
+	
 	public SunnyDay clone() {
 		SunnyDay environment = new SunnyDay();
 		for(Vehicle v : totalVehicles) {
@@ -172,6 +174,37 @@ public class SunnyDay implements Environment {
 		
 			v.tick(previousEnvironment);
 		}
+		
+	}
+	
+	public void clear() {
+		totalVehicles.clear();
+	}
+
+
+	@Override
+	public void resetTimer() {
+		this.timer.restart();
+		
+	}
+
+
+	@Override
+	public void stopTimer() {
+		this.timer.stop();
+		
+	}
+
+
+	@Override
+	public boolean isRunning() {
+		return timer.isRunning();
+	}
+
+
+	@Override
+	public void startTimer() {
+		timer.start();
 		
 	}
 

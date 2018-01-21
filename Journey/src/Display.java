@@ -77,6 +77,10 @@ public class Display extends JPanel {
 	}
 	
 	
+	public void reset() {
+		yOffset = 0;
+	}
+	
 	
 	
 

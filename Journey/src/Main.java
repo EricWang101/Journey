@@ -1,8 +1,11 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 public class Main extends JFrame{
 	
@@ -26,10 +29,10 @@ public class Main extends JFrame{
 	public Main() {
 		defaultEnvironment.setDisplay(display);
 		addRandomCars(defaultEnvironment);
+		setUpOptions();
 		
-		JMenu item = new JMenu("Test");//CHANGE LATER
-		options.add(item);   
-		menuBar.add(options);
+	
+	 
 		this.setJMenuBar(menuBar);
 	
 		this.getContentPane().add(display);
@@ -51,6 +54,55 @@ public class Main extends JFrame{
 					1.001+(.098) * randomNumber.nextDouble(),
 				    0.95+ (.04) * randomNumber.nextDouble()));
 		}
+	}
+	
+	public void setUpOptions() {
+		
+		JMenuItem resetOption = new JMenuItem("Reset");
+		resetOption.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				defaultEnvironment.clear();
+				display.reset();
+				addRandomCars(defaultEnvironment);
+				defaultEnvironment.resetTimer();
+				
+			}
+			
+		});
+		
+		options.add(resetOption);
+		
+		JMenuItem pause = new JMenuItem("Pause");
+		pause.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(defaultEnvironment.isRunning()) {
+					defaultEnvironment.stopTimer();
+					pause.setText("Unpause");
+				}else {
+					defaultEnvironment.startTimer();
+					pause.setText("Pause");
+				}
+				
+			}
+			
+		});
+		options.add(pause);
+		
+		JMenuItem quit = new JMenuItem("Quit");
+		quit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);	
+			}	
+		});
+		options.add(quit);
+		menuBar.add(options);
+		
 	}
 	
 
