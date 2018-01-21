@@ -35,9 +35,6 @@ public class Main extends JFrame{
 		this.getContentPane().add(display);
 		pack();
 	
-		
-		
-		
 	}
 	
 	public void addVehicles(Environment environment) {

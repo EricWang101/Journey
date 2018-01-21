@@ -126,9 +126,7 @@ public class SunnyDay implements Environment {
 			
 			Vehicle nextCar = nextVehicle(v);
 			
-			if(v.isCrashed()) {
-				continue;
-			}
+			
 			
 			//Marking Crashed
 			if(nextCar != null && (v.getPosition() + v.getHeight()) >= nextCar.getPosition()) {
@@ -137,6 +135,9 @@ public class SunnyDay implements Environment {
 				continue;	
 			}
 			//Continue On
+			if(v.isCrashed()) {
+				continue;
+			}
 			
 			
 			//attempt passing- stays one car length behind 
@@ -160,6 +161,13 @@ public class SunnyDay implements Environment {
 				}else {
 					 v.setState((v.getSpeed() >= nextCar.getSpeed()) ? VehicleState.CONSTANT : VehicleState.ACCELERATING); 
 				}
+			}
+			//Bug, cars change lanes back and crash if there is a car in that lane not the one they passed
+			if(v.isPassing() && v.getPosition() > v.getPassedVehicle().getPosition() + (2* Car.carHeight) && 
+				laneClear((v.getPassedVehicle().getPosition()+Car.carHeight), v.getPassedVehicle().getPosition() + (2*Car.carHeight), v.getLane()-1)){
+				v.setLane(v.getLane()-1);
+				v.setPassing(false);
+				v.setPassedVehicle(null);
 			}
 		
 			v.tick(previousEnvironment);
