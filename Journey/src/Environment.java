@@ -4,8 +4,6 @@ import javax.swing.Timer;
 
 public interface Environment {
 	
-	
-	
 	public void setDisplay(Display display);
 	
 	public void draw();

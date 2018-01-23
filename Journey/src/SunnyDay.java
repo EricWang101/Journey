@@ -3,28 +3,37 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
-
+/**
+ * A concrete class that implements the environment interface;
+ * Stores data of all the vehicles placed in the environment;
+ * Updates the display object depending on the behavior of the vehicles;
+ */
 public class SunnyDay implements Environment {
 	
-	private static final int delay = 40;
-	private static double speedLimit = 10.0;
+	private static final int delay = 40; // The Timer delay
+	private static double speedLimit = 10.0; // The maximum speed a Vehicle "should" travel
+	private static int numberOfLanes = 4; // The amount of driving lanes in the environment 
 	
-	private static int numberOfLanes = 4;
-	
-	private ArrayList<Vehicle> totalVehicles = new ArrayList<Vehicle>();
-	private Display display; 
+	private ArrayList<Vehicle> totalVehicles = new ArrayList<Vehicle>(); // Stores all the vehicles in the environment
+	private Display display; // The display object that will be showing the environment 
 	
 	
-	public Timer timer;
+	private Timer timer; // The main timer of the animation
 
+	/**
+	 * Sets the display;
+	 * Initializes the timer, and updates the state of the environment;
+	 * Starts the timer object, and repaints the display;
+	 * @param display The display object that will be showing the environment 
+	 */
 	@Override
 	public void setDisplay(Display display) {
 		this.display = display;
-	    this.timer = new Timer(40, new ActionListener() {
+	    this.timer = new Timer(delay, new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
-	                tick();
+	                tick(); //Updates the environment, and specfically the behavior of the vehicles on the road
 	                double furthest = 0;
-	                for (Vehicle v : totalVehicles) {
+	                for (Vehicle v : totalVehicles) { 
 	                    if (v.getPosition() > furthest) {
 	                        furthest = v.getPosition();
 	                    }
@@ -46,8 +55,6 @@ public class SunnyDay implements Environment {
 		}
 	}
 	
-	
-	
 	public SunnyDay clone() {
 		SunnyDay environment = new SunnyDay();
 		for(Vehicle v : totalVehicles) {
@@ -56,45 +63,6 @@ public class SunnyDay implements Environment {
 			}
 		}
 		return environment;
-	}
-
-	@Override
-	public void addVehicle(Vehicle vehicle) {
-		totalVehicles.add(vehicle);
-		
-	}
-
-	//Figure this out
-	@Override
-	public double getVehicleHeight() {
-		return 0.0;
-	}
-
-	
-	public ArrayList<Vehicle> getAllVehicles() {
-		return this.totalVehicles;
-	}
-
-	@Override
-	public int getLanes() {
-		return numberOfLanes;
-	}
-
-	@Override
-	public void setLanes(int lanes) {
-		numberOfLanes = lanes;
-		
-	}
-
-	@Override
-	public double getSpeedLimit() {
-		return this.speedLimit;
-	}
-
-	@Override
-	public void setSpeedLimit(double limit) {
-		speedLimit = limit;
-		
 	}
 
 	@Override
@@ -207,6 +175,46 @@ public class SunnyDay implements Environment {
 		timer.start();
 		
 	}
+	
+	@Override
+	public void addVehicle(Vehicle vehicle) {
+		totalVehicles.add(vehicle);
+		
+	}
+
+	//Figure this out
+	@Override
+	public double getVehicleHeight() {
+		return 0.0;
+	}
+
+	
+	public ArrayList<Vehicle> getAllVehicles() {
+		return this.totalVehicles;
+	}
+
+	@Override
+	public int getLanes() {
+		return numberOfLanes;
+	}
+	
+	@Override
+	public void setLanes(int lanes) {
+		numberOfLanes = lanes;
+		
+	}
+
+	@Override
+	public double getSpeedLimit() {
+		return this.speedLimit;
+	}
+
+	@Override
+	public void setSpeedLimit(double limit) {
+		speedLimit = limit;
+		
+	}
+
 
 	
 	

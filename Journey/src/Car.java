@@ -117,7 +117,7 @@ public class Car implements Vehicle {
 	/** Return's the top speed of a car */
 	@Override
 	public double getTopSpeed() {
-		return this.topSpeed;
+		return topSpeed;
 	}
 	
 	/** Return's the current speed of the car */
