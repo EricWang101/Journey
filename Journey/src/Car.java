@@ -36,7 +36,7 @@ public class Car implements Vehicle {
 		return new Car(environment,position,lane,speed,acceleration,brakingPower);
 	}
 	
-	/** Updates the behavior of  the car after one unit of time has passed */
+	/** Updates the state of the car based off the environment */
 	public void tick(Environment environment) {
 		switch(this.state) {
 			case CONSTANT: 

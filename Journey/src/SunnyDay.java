@@ -16,8 +16,6 @@ public class SunnyDay implements Environment {
 	
 	private ArrayList<Vehicle> totalVehicles = new ArrayList<Vehicle>(); // Stores all the vehicles in the environment
 	private Display display; // The display object that will be showing the environment 
-	
-	
 	private Timer timer; // The main timer of the animation
 
 	/**
@@ -45,7 +43,7 @@ public class SunnyDay implements Environment {
 	        this.timer.start();
 	    }
 
-
+	/** Draws the vehicles by calling the specfic draw function in the Display class (More vehicles will be added in the future!)*/
 	@Override
 	public void draw() {
 		for(Vehicle v: this.totalVehicles) {
@@ -55,6 +53,7 @@ public class SunnyDay implements Environment {
 		}
 	}
 	
+	/** Returns a copy of the current environment */
 	public SunnyDay clone() {
 		SunnyDay environment = new SunnyDay();
 		for(Vehicle v : totalVehicles) {
@@ -64,21 +63,31 @@ public class SunnyDay implements Environment {
 		}
 		return environment;
 	}
-
+	
+	/**
+	 * Returns the closest in-front vehicle in the same lane; 
+	 * @param behind The car that is behind the closest in-front vehicle
+	 */
 	@Override
 	public Vehicle nextVehicle(Vehicle behind) {
 		Vehicle closest = null;
 		for(Vehicle v : totalVehicles) {
 			if(v.getLane() == behind.getLane() && 
-			   !v.equals(behind) &&//MAYBE CHANGE
+			   !v.equals(behind) &&
 			   v.getPosition() > behind.getPosition() && 
-			     (closest == null || v.getPosition() < behind.getPosition())) {
+			   (closest == null || v.getPosition() < behind.getPosition())) {
 				closest = v;
 			}
 		}
 		return closest;
 	}
 	
+	/**
+	 * Returns a boolean value describing the clearance state of a specified lane within the start and end positions.  
+	 * @param startingPos The starting position of the lane
+	 * @param endingPos The ending position of the lane
+	 * @param targetLane The specified lane 
+	 */
 	public boolean laneClear(double startingPos, double endingPos, int targetLane) {
 		for(Vehicle v: totalVehicles) {
 			if(v.getLane() != targetLane) continue; 
@@ -88,7 +97,8 @@ public class SunnyDay implements Environment {
 		}
 		return true;
 	}
-
+	
+	/** Updates the state of the environment, and specifically the behavior of the vehicles after one unit of time*/
 	@Override
 	public void tick() {
 		SunnyDay previousEnvironment = SunnyDay.this.clone();
@@ -96,126 +106,116 @@ public class SunnyDay implements Environment {
 			
 			Vehicle nextCar = nextVehicle(v);
 			
-			
-			
-			//Marking Crashed
+			//Mark vehicles as crashed if a collision occurs
 			if(nextCar != null && (v.getPosition() + v.getHeight()) >= nextCar.getPosition()) {
 				v.setState(VehicleState.CRASHED);
 				nextCar.setState(VehicleState.CRASHED);
 				continue;	
 			}
-			//Continue On
+			
+			//Dont update the vehicle if it was in a collision
 			if(v.isCrashed()) {
 				continue;
 			}
 			
-			
-			//attempt passing- stays one car length behind 
-			//NOTE- Crash when only within car distance, and the braking speed is still greater than next car's speed, and cant change lanes
+			//Try to avoid crashing by braking when within one car distance
+			//NOTE: Crash occurs when the braking velocity is greater than the in-front vehicle, and can not change lanes
 			if(nextCar!= null) {
 				if(nextCar.getPosition() - v.getPosition() < (2* Car.carHeight)) {
 					v.setState(VehicleState.BRAKING);
 					
-					if(!v.isPassing() && 
+					//Attempt passing the vehicle by changing lanes
+					if (!v.isPassing() && 
 					(v.getLane() + 1) < getLanes() &&
-					v.getTopSpeed() > nextCar.getSpeed() &&
-					laneClear(v.getPosition()-(2*Car.carHeight), nextCar.getPosition()+(2*Car.carHeight), v.getLane()+1)) {
-						
-						v.setLane(v.getLane()+1);
-						v.setState(VehicleState.ACCELERATING);
-						v.setPassing(true);
-						v.setPassedVehicle(nextCar);
+					(v.getTopSpeed() > nextCar.getSpeed()) &&
+					(laneClear(v.getPosition()-(2*Car.carHeight), nextCar.getPosition()+(2*Car.carHeight), v.getLane()+1))){
+				
+						v.setLane(v.getLane()+1); 
+						v.setState(VehicleState.ACCELERATING); 
+						v.setPassing(true); 
+						v.setPassedVehicle(nextCar); 
 						
 					}
-				//Accelerate until equal to speed of the car in front
+				// Accelerate until behind the "in-front" car (if possible)
 				}else {
 					 v.setState((v.getSpeed() >= nextCar.getSpeed()) ? VehicleState.CONSTANT : VehicleState.ACCELERATING); 
 				}
 			}
-			//Bug, cars change lanes back and crash if there is a car in that lane not the one they passed
+			//Return back to inside lane after passing the vehicle
 			if(v.isPassing() && v.getPosition() > v.getPassedVehicle().getPosition() + (2* Car.carHeight) && 
 				laneClear((v.getPassedVehicle().getPosition()+Car.carHeight), v.getPassedVehicle().getPosition() + (2*Car.carHeight), v.getLane()-1)){
 				v.setLane(v.getLane()-1);
 				v.setPassing(false);
 				v.setPassedVehicle(null);
 			}
-		
+			
+			//Updates the state of the vehicle
 			v.tick(previousEnvironment);
-		}
-		
+		}	
 	}
 	
+	/** Clears all the vehicles in the field totalVehicles */
 	public void clear() {
 		totalVehicles.clear();
 	}
 
-
+	/** Resets the timer */
 	@Override
 	public void resetTimer() {
-		this.timer.restart();
-		
+		this.timer.restart();	
 	}
 
-
+	/** Stops the timer */
 	@Override
 	public void stopTimer() {
-		this.timer.stop();
-		
+		this.timer.stop();	
 	}
-
-
+	
+	/** Returns a boolean value whether or not the timer is running */ 
 	@Override
 	public boolean isRunning() {
 		return timer.isRunning();
 	}
-
-
+	
+	/** Starts the timer */
 	@Override
 	public void startTimer() {
-		timer.start();
-		
+		timer.start();	
 	}
 	
+	/** Adds a vehicle to the arraylist totalVehicles */
 	@Override
 	public void addVehicle(Vehicle vehicle) {
-		totalVehicles.add(vehicle);
-		
+		totalVehicles.add(vehicle);	
 	}
-
-	//Figure this out
-	@Override
-	public double getVehicleHeight() {
-		return 0.0;
-	}
-
 	
+	/** Returns the ArrayList of vehicles in the environment*/
 	public ArrayList<Vehicle> getAllVehicles() {
 		return this.totalVehicles;
 	}
-
+	
+	/** Returns the numberOfLanes in the environment */
 	@Override
 	public int getLanes() {
 		return numberOfLanes;
 	}
 	
+	/** Sets the numberOfLanes of the environment */
 	@Override
 	public void setLanes(int lanes) {
 		numberOfLanes = lanes;
-		
 	}
-
+	
+	/** Returns the speed limit of the environment */
 	@Override
 	public double getSpeedLimit() {
-		return this.speedLimit;
+		return speedLimit;
 	}
-
+	
+	/** Sets the speed limit of the environment */
 	@Override
 	public void setSpeedLimit(double limit) {
-		speedLimit = limit;
-		
+		speedLimit = limit;	
 	}
-
-
-	
 	
 }
