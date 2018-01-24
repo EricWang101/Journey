@@ -81,7 +81,7 @@ public class Display extends JPanel {
 		context.drawRect(xOffset + lane*laneWidth + padding/2, yOffset + position, laneWidth - padding, Car.carHeight);
 		context.setColor(color);
 		if(crashed) {
-			context.setColor(Color.BLACK);//Kinda boring , maybe change up later
+			context.setColor(Color.BLACK); //Kinda boring , maybe change up later
 		}
 		context.fillRect(xOffset + lane*laneWidth + padding/2, yOffset + position, laneWidth - padding, Car.carHeight);
 	}
